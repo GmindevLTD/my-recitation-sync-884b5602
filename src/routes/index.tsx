@@ -93,7 +93,7 @@ function HomePage() {
       .eq("surah_number", surahNum)
       .order("created_at", { ascending: false })
       .then(({ data }) => {
-        setMyRecitations((data as UserRecitation[]) || []);
+        setMyRecitations((data as unknown as UserRecitation[]) || []);
         setActiveCustom(null);
       });
   }, [surahNum]);
@@ -224,20 +224,22 @@ function HomePage() {
       // 3. Insert
       const { data: row, error: insErr } = await supabase
         .from("user_recitations")
-        .insert({
-          name: recName,
-          surah_number: surahNum,
-          ayah_start: ayahStart,
-          ayah_end: ayahEnd,
-          audio_url: pub.publicUrl,
-          audio_path: path,
-          alignment: result.words,
-        })
+        .insert([
+          {
+            name: recName,
+            surah_number: surahNum,
+            ayah_start: ayahStart,
+            ayah_end: ayahEnd,
+            audio_url: pub.publicUrl,
+            audio_path: path,
+            alignment: result.words as unknown as never,
+          },
+        ])
         .select()
         .single();
       if (insErr) throw insErr;
 
-      setMyRecitations((prev) => [row as UserRecitation, ...prev]);
+      setMyRecitations((prev) => [row as unknown as UserRecitation, ...prev]);
       setRecName("");
       toast.success("Récitation ajoutée et synchronisée !");
     } catch (e) {
