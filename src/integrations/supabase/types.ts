@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      user_recitations: {
+        Row: {
+          alignment: Json
+          audio_path: string
+          audio_url: string
+          ayah_end: number
+          ayah_start: number
+          created_at: string
+          duration_sec: number | null
+          id: string
+          name: string
+          surah_number: number
+        }
+        Insert: {
+          alignment: Json
+          audio_path: string
+          audio_url: string
+          ayah_end: number
+          ayah_start?: number
+          created_at?: string
+          duration_sec?: number | null
+          id?: string
+          name: string
+          surah_number: number
+        }
+        Update: {
+          alignment?: Json
+          audio_path?: string
+          audio_url?: string
+          ayah_end?: number
+          ayah_start?: number
+          created_at?: string
+          duration_sec?: number | null
+          id?: string
+          name?: string
+          surah_number?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
